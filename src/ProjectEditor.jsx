@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles, createStyles, Button, List, ListItem, ListItemText } from '@material-ui/core';
-import { useProject, deleteProject, addScene, setScenePrompt, addSceneOption, setSceneOptionText, setSceneOptionTarget, setSceneName, setProjectCss } from './util/data';
+import { useProject, deleteProject, addScene, setScenePrompt, addSceneOption, setSceneOptionText, setSceneOptionTarget, setSceneName, setProjectCss, setProjectName } from './util/data';
 
 const styles = (theme) => createStyles({
   root: {
@@ -15,7 +15,19 @@ function ProjectEditor({ classes: c, close, id, play, defaultState }) {
   const [scene, setScene] = useState(defaultState.scene || null);
   const [autofocus, setAutoFocus] = useState(false);
   const [editSceneName, setEditSceneName] = useState(false);
+  const [editProjectName, setEditProjectName] = useState(false);
   const [cssEditor, setCssEditor] = useState(false);
+
+  // do some sanity checks
+  if (cssEditor && scene) {
+    setCssEditor(false);
+  }
+  if((cssEditor || scene) && editProjectName) {
+    setEditProjectName(false);
+  }
+  if((cssEditor || !scene) && editSceneName) {
+    setEditSceneName(false);
+  }
 
   const del = () => {
     // eslint-disable-next-line no-restricted-globals
@@ -152,9 +164,7 @@ function ProjectEditor({ classes: c, close, id, play, defaultState }) {
         onChange={(ev) => {
           setProjectCss(id, ev.target.value);
         }}
-      >
-      
-      </textarea>
+      />
     </div>
   }
 
@@ -162,7 +172,37 @@ function ProjectEditor({ classes: c, close, id, play, defaultState }) {
     <br/>
     <Button onClick={close}>exit</Button>
     <Button onClick={() => play()}>play</Button>
-    <h1>Project: {project.name}</h1>
+    <h1>
+      {
+        editProjectName !== false ? (
+          <>
+            Project:
+            {' '}
+            <form onSubmit={(ev) => {
+              setProjectName(id, editProjectName);
+              setEditProjectName(false);
+              ev.preventDefault();
+            }} style={{ display: 'inline-block' }}>
+              <input
+                onChange={(ev) => {
+                  setEditProjectName(ev.target.value);
+                }}
+                value={editProjectName}
+                autoFocus
+                type="text"
+              />
+              <input type='submit' value='save' />
+            </form>
+          </>
+        ) : (
+          <>
+            Project: {project.name}
+            {' '}
+            <button onClick={() => setEditProjectName(project.name)}>rename</button>
+          </>
+        )
+      }
+    </h1>
 
     <h2>scenes</h2>
     <Button variant='outlined' onClick={newScene}>add</Button>

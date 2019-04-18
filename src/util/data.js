@@ -67,10 +67,20 @@ export function createProject(name) {
     ],
     variables: [],
   });
-  events.emit('project-list')
+  events.emit('project-list');
 }
 export function setProjectName(id, name) {
-  throw new Error('not implemented');
+  const project = getProject(id);
+  project.name = name;
+  localStorage[id] = JSON.stringify(project);
+
+  const projects = getProjectList();
+  const i = projects.findIndex((proj) => proj.id === id);
+  projects[i].name = name;
+  localStorage.cta_list = JSON.stringify(projects);
+  
+  events.emit('project-list');
+  events.emit(id);
 }
 export function setProjectCss(id, css) {
   const project = getProject(id);

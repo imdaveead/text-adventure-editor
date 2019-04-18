@@ -2,12 +2,19 @@ import React from 'react';
 
 export const changelogData = [
   {
+    name: '0.1.1',
+    beta: true,
+    info: [
+      '[Editor] Rename Projects',
+    ]
+  },
+  {
     name: '0.1.0',
     beta: true,
     info: [
-      'Initial Release',
-      'Temporary Editor UI',
-      'Rebuilt Game Engine',
+      '[Editor] Temporary UI',
+      '[Game] Rebuilt Game Engine',
+      'Initial Version',
     ]
   }
 ]
@@ -16,15 +23,15 @@ function Changelog() {
   return <div>
     <h2>Changelog</h2>    
     {
-      changelogData.map((version) => {
-        return <>
-          <h3>{version.name}</h3>
+      changelogData.map((version, i) => {
+        return <React.Fragment key={i}>
+          <h3>{version.name}{version.beta && ' (beta)'}</h3>
           <ul>
-            {version.info.map((item) => {
-              return <li>{item}</li>;
+            {version.info.map((item, i) => {
+              return <li key={i}>{item}</li>;
             })}
           </ul>
-        </>;
+        </React.Fragment>;
       })
     }
   </div>;
