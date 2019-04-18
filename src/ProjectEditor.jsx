@@ -4,6 +4,7 @@ import { useProject, deleteProject, addScene, setScenePrompt, addSceneOption, se
 
 const styles = (theme) => createStyles({
   root: {
+    paddingTop: theme.spacing.unit * 3,
     paddingLeft: theme.spacing.unit * 3,
     paddingRight: theme.spacing.unit * 3,
   },
@@ -43,7 +44,7 @@ function ProjectEditor({ classes: c, close, id, play, defaultState }) {
   if (scene) {
     const sceneInfo = project.scenes.find(x => x.name === scene);
     
-    return <div>
+    return <div className={c.root}>
       <Button onClick={() => setScene(null)}>exit</Button>
       <Button onClick={() => play(scene, null, {scene})}>test</Button>
       <h1>
@@ -169,7 +170,6 @@ function ProjectEditor({ classes: c, close, id, play, defaultState }) {
   }
 
   return <div className={c.root}>
-    <br/>
     <Button onClick={close}>exit</Button>
     <Button onClick={() => play()}>play</Button>
     <h1>
