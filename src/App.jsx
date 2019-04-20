@@ -32,7 +32,7 @@ function App({ classes: c }) {
     <AppBar position="static" color="default">
       <Toolbar>
         <Typography variant="h6" color="inherit">
-          CTA Editor (0.1.0 beta)
+          CTA Editor (0.1.1 beta)
         </Typography>
       </Toolbar>
     </AppBar>

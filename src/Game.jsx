@@ -24,7 +24,7 @@ function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug }) {
           <AppBar position="static" color="default">
             <Toolbar>
               <Typography variant="h6" color="inherit">
-                CTA Editor (0.1.0 beta) - Playing "{project.name}"
+                CTA Editor (0.1.1 beta) - Playing "{project.name}"
               </Typography>
               <Button variant='outlined' onClick={() => exit()}>
                 Exit
