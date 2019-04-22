@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { withStyles, createStyles, Button, List, ListItem, ListItemText } from '@material-ui/core';
-import { useProject, deleteProject, addScene, setScenePrompt, addSceneOption, setSceneOptionText, setSceneOptionTarget, setSceneName, setProjectCss, setProjectName, sceneExists } from './util/data';
+import { useProject, deleteProject, addScene, setScenePrompt, addSceneOption, setSceneOptionText, setSceneOptionTarget, setSceneName, setProjectCss, setProjectName, sceneExists } from '../util/data';
+import { downloadText } from 'download.js';
 
 const styles = (theme) => createStyles({
   root: {
@@ -248,6 +249,16 @@ function ProjectEditor({ classes: c, close, id, play, defaultState }) {
       onClick={() => setCssEditor(true)}
     >
       Edit CSS
+    </Button>
+
+    <h2>backup</h2>
+    <Button
+      variant='outlined'
+      onClick={() => {
+        downloadText(`${project.name}.json`, JSON.stringify(project));
+      }}
+    >
+      Export Project
     </Button>
 
     <h2>danger</h2>

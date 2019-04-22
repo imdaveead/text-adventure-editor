@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles, createStyles, Button, List, ListItem, ListItemText } from '@material-ui/core';
-import { useProjectList } from './util/data';
-import { uiNewProject } from './util/menu';
+import { useProjectList } from '../util/data';
+import { uiNewProject } from '../util/menu';
 import Changelog from './Changelog';
 
 const styles = (theme) => createStyles({

@@ -1,6 +1,60 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { useProject } from './util/data';
+import { useProject } from '../util/data';
 import { Typography, Toolbar, AppBar, Button } from '@material-ui/core';
+
+function SceneRenderer({ setScene, scene, sceneId, prevScene, exit, debug }) {
+  if(!scene) {
+    return <>
+      <h1>CTA Game Engine Error</h1>
+      {
+        sceneId === 'start' ? (
+          <>
+            <p>
+              Could not find a Starting Scene. Make sure you have a scene named "start"
+              </p>
+            {
+              debug && (
+                <>
+                  <br /><br />
+                  <button onClick={() => exit({ createStartScene: true, scene: 'start' })}>Create Start Scene</button>
+                </>
+              )
+            }
+          </>
+        ) : (
+            <p>
+              Cannot find scene "{sceneId}"{prevScene && `, from scene "${prevScene}"`}
+            </p>
+          )
+      }
+    </>;
+  }
+
+  return <>
+  <div className='prompt'>
+    <p>
+      {scene.prompt}
+    </p>
+  </div>
+    <div className='option-container'>
+      <ul className='option-list'>
+        {
+          scene.options.map((opt, i) => {
+            return <li className='option' key={i}>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a href="#" onClick={(ev) => {
+                ev.preventDefault();
+                setScene(opt.target);
+              }}>
+                {opt.text}
+              </a>
+            </li>
+          })
+        }
+      </ul>
+    </div>
+        </>;
+}
 
 function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug: defaultDebug }) {
   const project = useProject(id);
@@ -47,65 +101,13 @@ function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug: defaultD
     </AppBar>
   </>;
 
-  if (!scene) {
-    return <div>
-      {DebugBar}
-      <style>{project.css}</style>
-      <div>
-        <h1>CTA Game Engine Error</h1>
-        {
-          sceneId === 'start' ? (
-            <>
-              <p>
-                Could not find a Starting Scene. Make sure you have a scene named "start"
-              </p>
-              {
-                debug && (
-                  <>
-                    <br/><br/>
-                    <button onClick={() => exit({ createStartScene: true, scene: 'start' })}>Create Start Scene</button>
-                  </>
-                )
-              }
-            </>
-          ) : (
-            <p>
-              Cannot find scene "{sceneId}"{prevScene && `, from scene "${prevScene}"`}
-            </p>
-          )
-        }
-      </div>
-    </div>
-  }
-
   return <div className='root'>
     <style>{project.css}</style>
     {
       DebugBar
     }
     <div className='container'>
-      <div className='prompt'>
-        <p>
-          {scene.prompt}
-        </p>
-      </div>
-      <div className='option-container'>
-        <ul className='option-list'>
-          {
-            scene.options.map((opt, i) => {
-              return <li className='option' key={i}>
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a href="#" onClick={(ev) => {
-                  ev.preventDefault();
-                  setScene(opt.target);
-                }}>
-                  {opt.text}
-                </a>
-              </li>
-            })
-          }
-        </ul>
-      </div>
+      <SceneRenderer {...{ setScene, scene, sceneId, prevScene, exit, debug }} />
     </div>
   </div>;
 }

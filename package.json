@@ -1,8 +1,9 @@
 {
-  "name": "cta2",
+  "name": "text-adventure-creator",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.3",
+    "download.js": "^1.0.0",
     "eventemitter3": "^3.1.0",
     "material-ui-fast-ripple": "^1.0.0",
     "react": "^16.8.6",

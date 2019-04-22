@@ -32,13 +32,19 @@ function App({ classes: c }) {
     <AppBar position="static" color="default">
       <Toolbar>
         <Typography variant="h6" color="inherit">
-          {
-            openProject ? 'TAC ' : 'Text Adventure Creator '
-          }
-          (0.1.2 beta)
+          Text Adventure Creator (0.1.2 beta)
         </Typography>
       </Toolbar>
     </AppBar>
+    {
+      (window.location.hostname || window.location.host) === 'cta2.davecode.me' && (
+        <p style={{color: 'red'}}>
+          Project moved to <a href="https://davecode.me/"></a>,
+          please export and import your projects there, as this url will be taken down
+          on <b>Friday, April 3rd</b>.
+        </p>
+      )
+    }
     {
       openProject ? (
         <ProjectEditor
