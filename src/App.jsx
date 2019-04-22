@@ -32,7 +32,10 @@ function App({ classes: c }) {
     <AppBar position="static" color="default">
       <Toolbar>
         <Typography variant="h6" color="inherit">
-          CTA Editor (0.1.1 beta)
+          {
+            openProject ? 'TAC ' : 'Text Adventure Creator '
+          }
+          (0.1.2 beta)
         </Typography>
       </Toolbar>
     </AppBar>

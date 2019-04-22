@@ -2,9 +2,10 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useProject } from './util/data';
 import { Typography, Toolbar, AppBar, Button } from '@material-ui/core';
 
-function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug }) {
+function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug: defaultDebug }) {
   const project = useProject(id);
   const [prevScene, setPrevScene] = useState(null);
+  const [debug, setDebug] = useState(defaultDebug);
   const [sceneId, setSceneId] = useState(defaultScene || 'start');
   // const [vars, setVar] = useState(defaultVars);
 
@@ -27,14 +28,17 @@ function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug }) {
       <AppBar position="static" color="default">
         <Toolbar>
           <Typography variant="h6" color="inherit">
-            CTA Editor (0.1.1 beta) - Playing "{project.name}"
-              </Typography>
+            TAC (0.1.2 beta) - Playing "{project.name}"
+          </Typography>
           <Button variant='outlined' onClick={() => exit()}>
             Exit
-              </Button>
+          </Button>
           <Button variant='outlined' onClick={() => exit({ scene: sceneId })}>
             Edit this scene
-              </Button>
+          </Button>
+          <Button variant='outlined' onClick={() => setDebug()}>
+            Hide Debug
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

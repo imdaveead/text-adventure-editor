@@ -6,6 +6,8 @@ export const changelogData = [
     name: '0.1.2',
     beta: true,
     info: [
+      'Name set to Text Adventure Creator.',
+      '[Game] Added a "Hide Debug" button to set the player into production mode.',
       '[Game+Editor] Display errors when viewing or editing a scene that doesn\nt exist.',
     ]
   },
