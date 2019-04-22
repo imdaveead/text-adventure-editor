@@ -1,3 +1,4 @@
+// spell-checker:words doesn
 import React from 'react';
 
 export const changelogData = [
@@ -5,6 +6,7 @@ export const changelogData = [
     name: '0.1.1',
     beta: true,
     info: [
+      '[Game+Editor] Display errors when viewing or editing a scene that doesn\nt exist.',
       '[Editor] Rename Projects',
     ]
   },
