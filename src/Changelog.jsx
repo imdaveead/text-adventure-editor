@@ -3,10 +3,16 @@ import React from 'react';
 
 export const changelogData = [
   {
-    name: '0.1.1',
+    name: '0.1.2',
     beta: true,
     info: [
       '[Game+Editor] Display errors when viewing or editing a scene that doesn\nt exist.',
+    ]
+  },
+  {
+    name: '0.1.1',
+    beta: true,
+    info: [
       '[Editor] Rename Projects',
     ]
   },
