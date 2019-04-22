@@ -88,9 +88,9 @@ export function setProjectCss(id, css) {
   localStorage[id] = JSON.stringify(project);
   events.emit(id);
 }
-export function addScene(id) {
+export function addScene(id, name) {
   const project = getProject(id);
-  const sceneName = 'scene_' + project.scenes.length;
+  const sceneName = name || ('scene_' + project.scenes.length);
   
   project.scenes.push({
     name: sceneName,

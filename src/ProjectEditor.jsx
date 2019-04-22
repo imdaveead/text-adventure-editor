@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles, createStyles, Button, List, ListItem, ListItemText } from '@material-ui/core';
-import { useProject, deleteProject, addScene, setScenePrompt, addSceneOption, setSceneOptionText, setSceneOptionTarget, setSceneName, setProjectCss, setProjectName } from './util/data';
+import { useProject, deleteProject, addScene, setScenePrompt, addSceneOption, setSceneOptionText, setSceneOptionTarget, setSceneName, setProjectCss, setProjectName, sceneExists } from './util/data';
 
 const styles = (theme) => createStyles({
   root: {
@@ -13,11 +13,26 @@ const styles = (theme) => createStyles({
 function ProjectEditor({ classes: c, close, id, play, defaultState }) {
   if (!defaultState) defaultState = {};
   const project = useProject(id);
+  const [createStartScene, setCreateStartScene] = useState(defaultState.createStartScene);
   const [scene, setScene] = useState(defaultState.scene || null);
   const [autofocus, setAutoFocus] = useState(false);
   const [editSceneName, setEditSceneName] = useState(false);
   const [editProjectName, setEditProjectName] = useState(false);
   const [cssEditor, setCssEditor] = useState(false);
+
+  if (createStartScene) {
+    console.log('createStartScene');
+
+    setCreateStartScene(false);
+
+    setTimeout(() => {
+      if (!sceneExists(id, 'start')) {
+        addScene(id, 'start');
+      }
+    }, 100);
+
+    return null;
+  }
 
   // do some sanity checks
   if (cssEditor && scene) {
@@ -44,6 +59,17 @@ function ProjectEditor({ classes: c, close, id, play, defaultState }) {
   if (scene) {
     const sceneInfo = project.scenes.find(x => x.name === scene);
     
+    if(!sceneInfo) {
+      return <div className={c.root}>
+        <Button onClick={() => setScene(null)}>exit</Button>     
+        <h1>{scene}</h1>
+        <p>
+          this scene does not exist
+          <button onClick={() => addScene(id, scene)}>create</button>
+        </p>
+      </div>
+    }
+
     return <div className={c.root}>
       <Button onClick={() => setScene(null)}>exit</Button>
       <Button onClick={() => play(scene, null, {scene})}>test</Button>

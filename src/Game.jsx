@@ -4,8 +4,14 @@ import { Typography, Toolbar, AppBar, Button } from '@material-ui/core';
 
 function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug }) {
   const project = useProject(id);
-  const [sceneId, setScene] = useState(defaultScene || 'start');
+  const [prevScene, setPrevScene] = useState(null);
+  const [sceneId, setSceneId] = useState(defaultScene || 'start');
   // const [vars, setVar] = useState(defaultVars);
+
+  function setScene(newScene) {
+    setPrevScene(sceneId);
+    setSceneId(newScene);
+  }
 
   const scene = project.scenes.find(scene => scene.name === sceneId);
 
@@ -14,31 +20,64 @@ function Game({ id, scene: defaultScene, defaultVars = {}, exit, debug }) {
     return () => {
       document.body.classList.remove('cta');
     }
-  })
+  });
+
+  const DebugBar = debug && <>
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}>
+      <AppBar position="static" color="default">
+        <Toolbar>
+          <Typography variant="h6" color="inherit">
+            CTA Editor (0.1.1 beta) - Playing "{project.name}"
+              </Typography>
+          <Button variant='outlined' onClick={() => exit()}>
+            Exit
+              </Button>
+          <Button variant='outlined' onClick={() => exit({ scene: sceneId })}>
+            Edit this scene
+              </Button>
+        </Toolbar>
+      </AppBar>
+    </div>
+    <AppBar aria-hidden position="static" style={{ boxShadow: 'none', pointerEvents: 'none' }}>
+      <Toolbar />
+    </AppBar>
+  </>;
+
+  if (!scene) {
+    return <div>
+      {DebugBar}
+      <style>{project.css}</style>
+      <div>
+        <h1>CTA Game Engine Error</h1>
+        {
+          sceneId === 'start' ? (
+            <>
+              <p>
+                Could not find a Starting Scene. Make sure you have a scene named "start"
+              </p>
+              {
+                debug && (
+                  <>
+                    <br/><br/>
+                    <button onClick={() => exit({ createStartScene: true, scene: 'start' })}>Create Start Scene</button>
+                  </>
+                )
+              }
+            </>
+          ) : (
+            <p>
+              Cannot find scene "{sceneId}"{prevScene && `, from scene "${prevScene}"`}
+            </p>
+          )
+        }
+      </div>
+    </div>
+  }
 
   return <div className='root'>
     <style>{project.css}</style>
     {
-      debug && <>
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}>
-          <AppBar position="static" color="default">
-            <Toolbar>
-              <Typography variant="h6" color="inherit">
-                CTA Editor (0.1.1 beta) - Playing "{project.name}"
-              </Typography>
-              <Button variant='outlined' onClick={() => exit()}>
-                Exit
-              </Button>
-              <Button variant='outlined' onClick={() => exit({ scene: sceneId })}>
-                Edit this scene
-              </Button>
-            </Toolbar>
-          </AppBar>
-        </div>
-        <AppBar aria-hidden position="static" style={{ boxShadow: 'none', pointerEvents: 'none' }}>
-          <Toolbar />
-        </AppBar>
-      </>
+      DebugBar
     }
     <div className='container'>
       <div className='prompt'>
